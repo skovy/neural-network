@@ -12,6 +12,9 @@ class InputPerceptron:
     InputPerceptron.counter += 1
     print("Created %s" % self.identifier)
 
+  def __str__(self):
+     return self.identifier
+
   def output(self):
     return self.input
 

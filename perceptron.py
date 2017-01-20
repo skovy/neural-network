@@ -12,14 +12,22 @@ class Perceptron:
     Perceptron.counter += 1
     print("Created %s" % self.identifier)
 
+  def __str__(self):
+     return self.identifier
+
   def output(self):
-    output = 0
+    total_sum = 0
     for conn in self.input_connections:
-      output += conn.get_source().output() * conn.get_weight()
+      total_sum += conn.get_source().output() * conn.get_weight()
 
-    print("%s output value: %f" % (self.identifier, output))
+    # convert the total sum to a 1 or 0
+    output = 0
+    if total_sum >= 0:
+      output = 1
 
-    if output >= 0:
-      return 1
-    else:
-      return 0
+    print("%s produced sum: %f and output: %d" % (self.identifier, total_sum, output))
+
+    return output
+
+  def get_input_connections(self):
+    return self.input_connections
