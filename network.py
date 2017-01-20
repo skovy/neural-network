@@ -2,21 +2,48 @@ from perceptron import Perceptron
 from connection import Connection
 from input_perceptron import InputPerceptron
 
+LEARNING_CONSTANT = 0.5
+
+# a simple neural network
+# params:
+#   number_of_inputs: the number of inputs this network needs to accept
 class Network:
-  def __init__(self):
-    # a single, simple perceptron Network
-    # TODO: what should the first value be here?
-    self.input = InputPerceptron(5)
+  def __init__(self, number_of_inputs):
+    self.number_of_inputs = number_of_inputs
+    self.input_perceptrons = []
 
-    # bias is always set to 1
-    bias = InputPerceptron(1)
+    # generate the required number of input perceptrons
+    for i in range(0, number_of_inputs):
+      self.input_perceptrons.append(InputPerceptron())
 
-    # TODO: update initial weight
-    first_connection = Connection(self.input, 0.5)
-    bias_connection = Connection(bias, 0.5)
+    # TODO: make dynamic, currently only a single perceptron with n inputs
+    self.perceptron = self.create_hidden_perceptron(self.input_perceptrons)
 
-    self.perceptron = Perceptron([first_connection, bias_connection])
+  # create a bias perceptron that always outputs 1
+  def create_bias_perceptron(self):
+    return InputPerceptron(1)
+
+  # create a hidden perceptron that is part of a layer in the network
+  def create_hidden_perceptron(self, parents):
+    # initialize connections to the new perceptron with a connection to a bias input perceptron
+    connections = [Connection(self.create_bias_perceptron(), LEARNING_CONSTANT)]
+
+    # add all parents as connections as inputs
+    for parent in parents:
+      connections.append(Connection(parent, LEARNING_CONSTANT))
+
+    return Perceptron(connections)
+
+  def run_single_input(self, inputs):
+    if len(inputs) != self.number_of_inputs:
+      raise Exception("The number of input values does not match the number of input nodes")
+
+    # first set all of the inputs
+    for i in range(0, self.number_of_inputs):
+      self.input_perceptrons[i].update_input(inputs[i])
 
     print(self.perceptron.output())
+
+
 
 
