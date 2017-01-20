@@ -1,7 +1,18 @@
+# data manipulation and helpers
+import numpy as np
+
+# graphing helpers
+import plotly as py
+import plotly.graph_objs as go
+
+# the neural network
 from network import Network
 
+# create a network with 2 inputs and the initial weights for the connections
+# from the input and the bias input
 n = Network(2, [0.1, 0.2, 0.3])
 
+# the training set to learn the OR function
 training_set = [
   { 'inputs': [0, 0], 'expected_output': 0 },
   { 'inputs': [0, 1], 'expected_output': 1 },
@@ -9,14 +20,55 @@ training_set = [
   { 'inputs': [1, 1], 'expected_output': 1 }
 ]
 
-all_correct = False
+n.train(training_set)
 
-while all_correct != True:
-  all_correct = True # assume everything is correct!
+n.final_weights()
 
-  for example in training_set:
-    correct_output = n.run_single_training_input(example['inputs'], example['expected_output'])
-    if not correct_output:
-      # one bad examples ruins it for all of us :(
-      # but we don't break, we still have to go through the rest of the examples and get a turn :)
-      all_correct = False
+positive_x = []
+positive_y = []
+
+negative_x = []
+negative_y = []
+
+steps = 10 # number of steps on each axis
+start_pos = -1 * steps # the x, y mins
+end_pos = 2 * steps # the x,y max
+
+# generate a "matrix" with much finer steps to "brute-force chart"" the resulting function
+for i in range(start_pos, end_pos):
+  for j in range(start_pos, end_pos):
+    x = i / float(steps)
+    y = j / float(steps)
+    if n.run_single_input([x, y]):
+      positive_x.append(x)
+      positive_y.append(y)
+    else:
+      negative_x.append(x)
+      negative_y.append(y)
+
+# Create traces
+positive_trace = go.Scatter(
+    x = positive_x,
+    y = positive_y,
+    mode = 'markers',
+    marker = dict(
+        size = 4,
+        color = '#06D6A0'
+    )
+)
+
+negative_trace = go.Scatter(
+    x = negative_x,
+    y = negative_y,
+    mode = 'markers',
+    marker = dict(
+        size = 4,
+        color = '#EF476F'
+    )
+)
+
+
+data = [positive_trace, negative_trace]
+
+# Plot and embed in ipython notebook!
+py.offline.plot(data, filename='or-scatter.html')

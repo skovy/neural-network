@@ -38,7 +38,15 @@ class Network:
 
     return Perceptron(connections)
 
-  def run_single_training_input(self, inputs, expected_output):
+  # TODO: make dyanmic, assuming a single perceptron network
+  def final_weights(self):
+    for conn in self.perceptron.get_input_connections():
+      print("%s with final weight: %f" % (conn, conn.get_weight()))
+
+  # run a single set of inputs through a "trained" network
+  # params:
+  #   inputs: an array of inputs for each input perceptron, keep order consistent
+  def run_single_input(self, inputs):
     if len(inputs) != self.number_of_inputs:
       raise Exception("The number of input values does not match the number of input nodes")
 
@@ -46,7 +54,14 @@ class Network:
     for i in range(0, self.number_of_inputs):
       self.input_perceptrons[i].update_input(inputs[i])
 
-    actual_output = self.perceptron.output()
+    return self.perceptron.output()
+
+  # train the network by providing the expected output in addition to the outputs
+  # params:
+  #   inputs: an array of inputs for each input perceptron, keep order consistent
+  #   expected_output: the value that the network should produce, to help with learning
+  def run_single_training_input(self, inputs, expected_output):
+    actual_output = self.run_single_input(inputs)
 
     if actual_output == expected_output:
       print("Network produced the correct output")
@@ -73,7 +88,22 @@ class Network:
 
       return False # the wrong output
 
+  # train the network provided an array of training data
+  # params:
+  #   training_set: an array of dictionaries that contain an array of
+  #                 `inputs` and integer for the `expected_output`
+  def train(self, training_set):
+    all_correct = False
 
+    while all_correct != True:
+      all_correct = True # assume everything is correct!
+
+      for example in training_set:
+        correct_output = self.run_single_training_input(example['inputs'], example['expected_output'])
+        if not correct_output:
+          # one bad examples ruins it for all of us :(
+          # but we don't break, we still have to go through the rest of the examples and get a turn :)
+          all_correct = False
 
 
 

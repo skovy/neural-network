@@ -14,6 +14,9 @@ class Connection:
     Connection.counter += 1
     print("Created %s with weight %f" % (self.identifier, self.weight))
 
+  def __str__(self):
+     return self.identifier
+
   def get_source(self):
     return self.source
 
