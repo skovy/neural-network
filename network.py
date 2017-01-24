@@ -5,38 +5,74 @@ from input_perceptron import InputPerceptron
 # a simple neural network
 # params:
 #   number_of_inputs: the number of inputs this network needs to accept
-#   initial_weights: temporary initial weights for testing
+#   configuration: the number of perceptrons and the number of layers (array, each
+#                  element is a layer with number of perceptrons)
+#   initial_weights: optional, initial weights for perceptrons (3D array), includes bias weights
 class Network:
   LEARNING_CONSTANT = 0.5
 
-  def __init__(self, number_of_inputs, initial_weights):
-    # TODO: remove
-    self.initial_weights = initial_weights
+  def __init__(self, number_of_inputs, configuration, initial_weights = []):
+    self.number_of_inputs = number_of_inputs # a single integer for the total number of input perceptron
+    self.configuration = configuration # a 1D array, each element is a layer, each number is the number of perceptrons
+    self.initial_weights = initial_weights # a 3D array of weights, including the bias (last element)
 
-    self.number_of_inputs = number_of_inputs
-    self.input_perceptrons = []
+    self.input_perceptrons = [] # an array of the input perceptrons
+    self.hidden_perceptrons = [] # a 2D array of the network, each element is a layer, each array contains layer's perceptrons
+    self.output_perceptron = None # the last perceptron in the network that provides the final output
 
+    # TODO(skovy): first check validity of inputs (especially initial_weights)
+    # create the entire network, input perceptrons, hidden perceptrons (layers), connections, biases, etc
+    self.create_input_perceptrons()
+    self.create_hidden_perceptrons()
+
+  # create the desired number of input perceptrons and add them to the network
+  def create_input_perceptrons(self):
     # generate the required number of input perceptrons
-    for i in range(0, number_of_inputs):
+    for i in range(0, self.number_of_inputs):
+      # create an empty input perceptron, we don't know the first input value so initialize blank
       self.input_perceptrons.append(InputPerceptron())
 
-    # TODO: make dynamic, currently only a single perceptron with n inputs
-    self.perceptron = self.create_hidden_perceptron(self.input_perceptrons)
+  # create the hidden perceptrons within the network
+  def create_hidden_perceptrons(self):
+    # generate each layer in the network
+    for index in range(0, len(self.configuration)):
+      parents = []
+      if index > 0:
+        # the second layer and beyond connects to the previous hidden layer
+        parents = self.hidden_perceptrons[index - 1]
+      else:
+        # the first layer's parents are the input nodes
+        parents = self.input_perceptrons
 
-  # create a bias perceptron that always outputs 1
-  def create_bias_perceptron(self):
-    return InputPerceptron(1)
+      layer = self.create_layer(self.configuration[index], parents)
+      self.hidden_perceptrons.append(layer)
+
+  # create a single layer of hidden perceptrons, with connections to their parents and a bias
+  def create_layer(self, number_of_perceptrons, parents):
+    layer = []
+
+    for index in range(0, number_of_perceptrons):
+      perceptron = self.create_hidden_perceptron(parents)
+      layer.append(perceptron)
+
+    return layer
 
   # create a hidden perceptron that is part of a layer in the network
   def create_hidden_perceptron(self, parents):
     # initialize connections to the new perceptron with a connection to a bias input perceptron
-    connections = [Connection(self.create_bias_perceptron(), self.initial_weights[0])]
+    # TODO(skovy): fix weight
+    connections = [Connection(self.create_bias_perceptron(), 0.5)]
 
     # add all parents as connections as inputs
     for i, parent in enumerate(parents):
-      connections.append(Connection(parent, self.initial_weights[i + 1]))
+      # TODO(skovy): fix weight
+      connections.append(Connection(parent, 0.5))
 
     return Perceptron(connections)
+
+  # create a bias perceptron that always outputs 1
+  def create_bias_perceptron(self):
+    return InputPerceptron(1)
 
   # TODO: make dyanmic, assuming a single perceptron network
   def final_weights(self):
