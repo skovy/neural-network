@@ -29,7 +29,7 @@ and_function_training_set = [
 ]
 
 # perform training with the provided training set
-n.train(and_function_training_set)
+n.train(or_function_training_set)
 n.final_weights()
 
 # all (x, y) pairs that produce a positive output
@@ -40,7 +40,7 @@ positive_y = []
 negative_x = []
 negative_y = []
 
-steps = 10 # number of steps on each axis
+steps = 5 # number of steps on each axis
 start_pos = -1 * steps # the x and y mins
 end_pos = 2 * steps # the x and y max
 
@@ -59,6 +59,7 @@ for i in range(start_pos, end_pos):
 # create traces of the positive and negative outputs
 # and generate a scatter plot of the resulting data
 positive_trace = go.Scatter(
+    name = 'Positive Output',
     x = positive_x,
     y = positive_y,
     mode = 'markers',
@@ -68,6 +69,7 @@ positive_trace = go.Scatter(
     )
 )
 negative_trace = go.Scatter(
+    name = 'Negative Output',
     x = negative_x,
     y = negative_y,
     mode = 'markers',
