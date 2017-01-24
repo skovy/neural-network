@@ -4,7 +4,7 @@
 class InputPerceptron:
   counter = 0
 
-  def __init__(self, input = 0):
+  def __init__(self, input = None):
     self.input = input
 
     # create an unique identifier for easier logging
