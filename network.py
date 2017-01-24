@@ -37,15 +37,19 @@ class Network:
     # generate each layer in the network
     for index in range(0, len(self.configuration)):
       parents = []
-      if index > 0:
-        # the second layer and beyond connects to the previous hidden layer
-        parents = self.hidden_perceptrons[index - 1]
-      else:
+      if index == 0:
         # the first layer's parents are the input nodes
         parents = self.input_perceptrons
+      else:
+        # the second layer and beyond connects to the previous hidden layer
+        parents = self.hidden_perceptrons[index - 1]
 
       layer = self.create_layer(self.configuration[index], parents)
       self.hidden_perceptrons.append(layer)
+
+    # set the final out perceptron in the network
+    # this assumes there is one and only one output perceptron at the end of the network
+    self.output_perceptron = self.hidden_perceptrons[-1][0]
 
   # create a single layer of hidden perceptrons, with connections to their parents and a bias
   def create_layer(self, number_of_perceptrons, parents):
@@ -90,7 +94,7 @@ class Network:
     for i in range(0, self.number_of_inputs):
       self.input_perceptrons[i].update_input(inputs[i])
 
-    return self.perceptron.output()
+    return self.output_perceptron.output()
 
   # train the network by providing the expected output in addition to the outputs
   # params:
@@ -105,7 +109,7 @@ class Network:
     else:
       print("Network produced the wrong output")
 
-      connections = self.perceptron.get_input_connections()
+      connections = self.output_perceptron.get_input_connections()
 
       for conn in connections:
         # we only update the connections that actually impacted the output of this perceptron
@@ -131,8 +135,10 @@ class Network:
   def train(self, training_set):
     all_correct = False
 
-    while all_correct != True:
+    iteration = 0
+    while all_correct != True and iteration < 2:
       all_correct = True # assume everything is correct!
+      iteration += 1
 
       for example in training_set:
         correct_output = self.run_single_training_input(example['inputs'], example['expected_output'])
