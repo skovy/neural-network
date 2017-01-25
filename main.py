@@ -38,8 +38,16 @@ and_function_training_set = [
   { 'inputs': [1, 1], 'expected_output': 1 }
 ]
 
+# a simple training set to learn the NXOR function
+nxor_function_training_set = [
+  { 'inputs': [1, 0], 'expected_output': 0 },
+  { 'inputs': [0, 0], 'expected_output': 1 },
+  { 'inputs': [0, 1], 'expected_output': 0 },
+  { 'inputs': [1, 1], 'expected_output': 1 }
+]
+
 # perform training with the provided training set
-n.train(or_function_training_set)
+n.train(nxor_function_training_set)
 n.final_weights()
 
 if show_visualization:

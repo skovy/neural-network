@@ -1,3 +1,5 @@
+import math
+
 # a single perceptron in the network
 # params:
 #   input_connection: an array of Connections that are connected as inputs
@@ -20,14 +22,23 @@ class Perceptron:
     for conn in self.input_connections:
       total_sum += conn.get_source().output() * conn.get_weight()
 
-    # convert the total sum to a 1 or 0
-    output = 0
-    if total_sum >= 0:
-      output = 1
+    final_result = self.sigmoid(total_sum)
 
-    print("%s produced sum: %f and output: %d" % (self.identifier, total_sum, output))
+    print("%s produced total sum: %f and sigmoid: %f and output: %d" % (self.identifier, total_sum, final_result, 0))
 
-    return output
+    return final_result
 
   def get_input_connections(self):
     return self.input_connections
+
+  # calculate the sigmoid value
+  def sigmoid(self, x):
+    return 1 / (1 + math.exp(-x))
+
+  def final_weights(self):
+    for conn in self.get_input_connections():
+      # only print other perceptrons in the network and ignore biases/inputs/etc
+      if isinstance(conn.get_source(), Perceptron):
+        conn.get_source().final_weights()
+
+      print("%s with final weight: %f" % (conn, conn.get_weight()))

@@ -81,10 +81,9 @@ class Network:
   def create_bias_perceptron(self):
     return InputPerceptron(1)
 
-  # TODO: make dyanmic, assuming a single perceptron network
+  # print the entire networks final weights
   def final_weights(self):
-    for conn in self.perceptron.get_input_connections():
-      print("%s with final weight: %f" % (conn, conn.get_weight()))
+    self.output_perceptron.final_weights()
 
   # run a single set of inputs through a "trained" network
   # params:
@@ -116,7 +115,7 @@ class Network:
 
       for conn in connections:
         # we only update the connections that actually impacted the output of this perceptron
-        if  conn.source.output() > 0:
+        if conn.source.output() >= 0:
           weight = conn.get_weight()
           adjustment = 0
 
