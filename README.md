@@ -4,9 +4,20 @@ A simple feed-forward neural network that uses back-propgation for training.
 
 #### Usage
 
-`$ python main.py <configuration_file> <training_data_file> <show_visualization>`
+`$ python main.py <configuration_file:string> <training_data_file:string> <training_iterations:integer> <show_visualization:boolean> <start_pos:integer> <end_pos:integer> <steps:integer>`
 
-Example: `$ python main.py configs/single-layer.json training-data/xor.json true`
+- `configuration_file`: the configuration file to represent the network
+- `training_data_file`: the training data file to train the network
+- `training_iterations`: a number representing the maximum number of training iterations
+- `show_visualization`: a boolean whether to generate a visualization of the trained network
+- `start_pos`: _(required if show visualization is true)_ the start position of the `x`, `y` coordinates
+- `end_pos`: _(required if show visualization is true)_ the end position of the `x`, `y` coordinates
+- `steps`: _(required if show visualization is true)_ the number of steps between each point
+
+Examples:
+
+- `$ python main.py configs/single-layer.json training-data/xor.json 100 false`
+- `$ python main.py configs/single-layer.json training-data/xor.json 4000 true -1 2 40`
 
 #### Configurations
 

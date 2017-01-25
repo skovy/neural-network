@@ -13,7 +13,7 @@ from network import Network
 
 # input validation and conversions
 if len(sys.argv) < 5:
-  raise Exception("Incorrect parameters. Correct usage: python main.py  <configuration_file:string> <training_data_file:string> <training_iterations:integer> <show_visualization:boolean>")
+  raise Exception("Incorrect parameters. Correct usage: python main.py <configuration_file:string> <training_data_file:string> <training_iterations:integer> <show_visualization:boolean>")
 
 configuration_file = sys.argv[1]
 training_data_file = sys.argv[2]
