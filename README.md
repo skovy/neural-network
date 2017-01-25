@@ -28,7 +28,7 @@ to the entire network, each element is a layer and each element's value is the
 number of perceptrons for that layer. The last element should always be `1` as
 the network assumes there is a single output perceptron. The `initial_weights`
 correponds to the initial weights for all of the connections. It's a 3-dimensional
-array. The first dimension is the entire network and each element is a signle layer,
+array. The first dimension is the entire network and each element is a single layer,
 similar to the `config`. The second dimension is a layer and each element is
 a single perceptron in that layer. The third dimension is an individual perceptron
 and each element correponds to a connection. The number of weights should be
@@ -61,7 +61,7 @@ true -1 2 40` produces something like the following. It creates a network with
 ![single-hidden-layer](/assets/single-hidden-layer.png)
 
 Provided with the 4 training examples for the XOR function, with a maximum iteration
-of `4000` for training and graphing from `(-1, -1)` to `(2, 2)` with `40` steps per
+of `4000` for training and graphing from `(-1, -1)` to `(2, 2)` with `20` steps per
 unit produces the following visualization.
 
 ![XOR](/assets/xor.png)
