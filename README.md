@@ -22,16 +22,16 @@ Examples:
 #### Configurations
 
 The `/configs` directory contains network configurations. Each object contains
-data to dynamically generate a network. The `number_of_inputs` correponds to
+data to dynamically generate a network. The `number_of_inputs` corresponds to
 the number of inputs the network should accept. The `config` array corresponds
 to the entire network, each element is a layer and each element's value is the
 number of perceptrons for that layer. The last element should always be `1` as
 the network assumes there is a single output perceptron. The `initial_weights`
-correponds to the initial weights for all of the connections. It's a 3-dimensional
+corresponds to the initial weights for all of the connections. It's a 3-dimensional
 array. The first dimension is the entire network and each element is a single layer,
 similar to the `config`. The second dimension is a layer and each element is
 a single perceptron in that layer. The third dimension is an individual perceptron
-and each element correponds to a connection. The number of weights should be
+and each element corresponds to a connection. The number of weights should be
 the `length(previous_layer) + 1`. This is because it needs a connection to every
 previous perceptron _and_ a bias perceptron. The last weight is for the bias perceptron.
 Order does matter, the first element will correspond to the first connection,
