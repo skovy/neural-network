@@ -11,36 +11,24 @@ import plotly.graph_objs as go
 # the custom neural network
 from network import Network
 
-if len(sys.argv) != 3:
-  raise Exception("Incorrect parameters. Correct usage: python main.py <training_data_file:string> <show_visualization:boolean>")
+if len(sys.argv) != 4:
+  raise Exception("Incorrect parameters. Correct usage: python main.py  <configuration_file:string> <training_data_file:string> <show_visualization:boolean>")
 
-training_data_file = sys.argv[1]
-show_visualization = (sys.argv[2] == "true")
+configuration_file = sys.argv[1]
+training_data_file = sys.argv[2]
+show_visualization = (sys.argv[3] == "true")
 
-configuration = [4, 1]
+# create a network with inputs, initial weights for the connections
+# from the input and the bias input from the desired configuration
+with open(configuration_file) as data_file:
+    config = json.load(data_file)
 
-# configuration = [2, 1]
-# initial_weights = [[[2, -2, 0], [1, 3, -1]], [[3, -2, -1]]]
+n = Network(config['number_of_inputs'], config['config'], config['initial_weights'])
 
-initial_weights = [[[-0.1, -0.1, 0.2], [-0.1, 0.2, 0.3], [0.4, -0.5, 0.1], [0.2, 0.1, -0.3]], [[-0.8, 0.3, 0.2, 0.1, 0.2]]]
-
-# create a network with 2 inputs and the initial weights for the connections
-# from the input and the bias input
-n = Network(2, configuration, initial_weights)
-
-# a simple training set to learn the OR function
-or_function_training_set =
-
-# a simple training set to learn the AND function
-and_function_training_set =
-
-# a simple training set to learn the NXOR function
-nxor_function_training_set =
-
+# perform training with the provided training set
 with open(training_data_file) as data_file:
     data = json.load(data_file)
 
-# perform training with the provided training set
 n.train(data['data'])
 n.final_weights()
 
@@ -53,8 +41,8 @@ if show_visualization:
   negative_x = []
   negative_y = []
 
-  steps = 1 # number of steps on each axis
-  start_pos = 0 * steps # the x and y mins
+  steps = 10 # number of steps on each axis
+  start_pos = -1 * steps # the x and y mins
   end_pos = 2 * steps # the x and y max
 
   # generate a "matrix" with much finer steps to "brute-force chart" the resulting function
@@ -77,7 +65,7 @@ if show_visualization:
       y = positive_y,
       mode = 'markers',
       marker = dict(
-          size = 15,
+          size = 4,
           color = '#06D6A0'
       )
   )
@@ -87,7 +75,7 @@ if show_visualization:
       y = negative_y,
       mode = 'markers',
       marker = dict(
-          size = 15,
+          size = 4,
           color = '#EF476F'
       )
   )
