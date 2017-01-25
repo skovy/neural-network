@@ -51,3 +51,17 @@ Training Data:
 - `or.json`: the OR function (`||`)
 - `xor.json`: the XOR function
 - `nxor.json`: the NXOR function
+
+#### Examples
+
+Executing `$ python main.py configs/single-layer.json training-data/xor.json 4000
+true -1 2 40` produces something like the following. It creates a network with
+2 input nodes, a hidden layer with 4 perceptrons and single output perceptron.
+
+![single-hidden-layer](/assets/single-hidden-layer.png)
+
+Provided with the 4 training examples for the XOR function, with a maximum iteration
+of `4000` for training and graphing from `(-1, -1)` to `(2, 2)` with `40` steps per
+unit produces the following visualization.
+
+![XOR](/assets/xor.png)
