@@ -1,4 +1,5 @@
 import sys
+import json
 
 # data manipulation and helpers
 import numpy as np
@@ -10,47 +11,37 @@ import plotly.graph_objs as go
 # the custom neural network
 from network import Network
 
-if len(sys.argv) != 2:
-  raise Exception("Incorrect parameters. Correct usage: python main.py <visualization:boolean>")
+if len(sys.argv) != 3:
+  raise Exception("Incorrect parameters. Correct usage: python main.py <training_data_file:string> <show_visualization:boolean>")
 
-show_visualization = (sys.argv[1] == "true")
+training_data_file = sys.argv[1]
+show_visualization = (sys.argv[2] == "true")
 
-configuration = [2, 1]
-# initial_weights = [[[2, -2, 0], [1, 3, -1]], [[3, -2, -1]]]
+configuration = [4, 1]
 
 # configuration = [2, 1]
-initial_weights = [[[0.5, 0.5, 0.5], [0.5, 0.5, 0.5]], [[0.5, 0.5]]]
+# initial_weights = [[[2, -2, 0], [1, 3, -1]], [[3, -2, -1]]]
+
+initial_weights = [[[-0.1, -0.1, 0.2], [-0.1, 0.2, 0.3], [0.4, -0.5, 0.1], [0.2, 0.1, -0.3]], [[-0.8, 0.3, 0.2, 0.1, 0.2]]]
 
 # create a network with 2 inputs and the initial weights for the connections
 # from the input and the bias input
 n = Network(2, configuration, initial_weights)
 
 # a simple training set to learn the OR function
-or_function_training_set = [
-  { 'inputs': [0, 0], 'expected_output': 0 },
-  { 'inputs': [0, 1], 'expected_output': 1 },
-  { 'inputs': [1, 0], 'expected_output': 1 },
-  { 'inputs': [1, 1], 'expected_output': 1 }
-]
+or_function_training_set =
 
 # a simple training set to learn the AND function
-and_function_training_set = [
-  { 'inputs': [0, 0], 'expected_output': 0 },
-  { 'inputs': [0, 1], 'expected_output': 0 },
-  { 'inputs': [1, 0], 'expected_output': 0 },
-  { 'inputs': [1, 1], 'expected_output': 1 }
-]
+and_function_training_set =
 
 # a simple training set to learn the NXOR function
-nxor_function_training_set = [
-  { 'inputs': [1, 0], 'expected_output': 0 },
-  { 'inputs': [0, 0], 'expected_output': 1 },
-  { 'inputs': [0, 1], 'expected_output': 0 },
-  { 'inputs': [1, 1], 'expected_output': 1 }
-]
+nxor_function_training_set =
+
+with open(training_data_file) as data_file:
+    data = json.load(data_file)
 
 # perform training with the provided training set
-n.train(nxor_function_training_set)
+n.train(data['data'])
 n.final_weights()
 
 if show_visualization:
@@ -62,8 +53,8 @@ if show_visualization:
   negative_x = []
   negative_y = []
 
-  steps = 10 # number of steps on each axis
-  start_pos = -1 * steps # the x and y mins
+  steps = 1 # number of steps on each axis
+  start_pos = 0 * steps # the x and y mins
   end_pos = 2 * steps # the x and y max
 
   # generate a "matrix" with much finer steps to "brute-force chart" the resulting function
@@ -86,7 +77,7 @@ if show_visualization:
       y = positive_y,
       mode = 'markers',
       marker = dict(
-          size = 4,
+          size = 15,
           color = '#06D6A0'
       )
   )
@@ -96,7 +87,7 @@ if show_visualization:
       y = negative_y,
       mode = 'markers',
       marker = dict(
-          size = 4,
+          size = 15,
           color = '#EF476F'
       )
   )
