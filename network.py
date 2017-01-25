@@ -122,12 +122,11 @@ class Network:
   # params:
   #   training_set: an array of dictionaries that contain an array of
   #                 `inputs` and integer for the `expected_output`
-  def train(self, training_set):
+  def train(self, training_set, training_iterations):
     all_correct = False
 
     iteration = 0
-    max_iterations = 4000
-    while all_correct != True and iteration < max_iterations:
+    while all_correct != True and iteration < training_iterations:
       all_correct = True # assume everything is correct!
       iteration += 1
 
@@ -140,7 +139,7 @@ class Network:
           # but we don't break, we still have to go through the rest of the examples and get a turn :)
           all_correct = False
 
-    print("Training stopped after %d out of max %d iterations over the example set." % (iteration, max_iterations))
+    print("Training stopped after %d out of max %d iterations over the example set." % (iteration, training_iterations))
 
 
 

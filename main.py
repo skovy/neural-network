@@ -11,28 +11,37 @@ import plotly.graph_objs as go
 # the custom neural network
 from network import Network
 
-if len(sys.argv) != 4:
-  raise Exception("Incorrect parameters. Correct usage: python main.py  <configuration_file:string> <training_data_file:string> <show_visualization:boolean>")
+# input validation and conversions
+if len(sys.argv) < 5:
+  raise Exception("Incorrect parameters. Correct usage: python main.py  <configuration_file:string> <training_data_file:string> <training_iterations:integer> <show_visualization:boolean>")
 
 configuration_file = sys.argv[1]
 training_data_file = sys.argv[2]
-show_visualization = (sys.argv[3] == "true")
+training_iterations = int(sys.argv[3])
+show_visualization = (sys.argv[4] == "true")
+
+if show_visualization and len(sys.argv) != 8:
+  raise Exception("When creating a visualization, <start_pos:integer> <end_pos:integer> <steps:integer> are required.")
 
 # create a network with inputs, initial weights for the connections
 # from the input and the bias input from the desired configuration
 with open(configuration_file) as data_file:
-    config = json.load(data_file)
+  config = json.load(data_file)
 
 n = Network(config['number_of_inputs'], config['config'], config['initial_weights'])
 
 # perform training with the provided training set
 with open(training_data_file) as data_file:
-    data = json.load(data_file)
+  data = json.load(data_file)
 
-n.train(data['data'])
+n.train(data['data'], training_iterations)
 n.final_weights()
 
 if show_visualization:
+  steps = int(sys.argv[7]) # number of steps on each axis
+  start_pos = int(sys.argv[5]) * steps # the x and y mins
+  end_pos = int(sys.argv[6]) * steps # the x and y max
+
   # all (x, y) pairs that produce a positive output
   positive_x = []
   positive_y = []
@@ -40,10 +49,6 @@ if show_visualization:
   # all (x, y) pairs that produce a negative output
   negative_x = []
   negative_y = []
-
-  steps = 10 # number of steps on each axis
-  start_pos = -1 * steps # the x and y mins
-  end_pos = 2 * steps # the x and y max
 
   # generate a "matrix" with much finer steps to "brute-force chart" the resulting function
   for i in range(start_pos, end_pos):
