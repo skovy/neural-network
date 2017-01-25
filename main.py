@@ -15,8 +15,11 @@ if len(sys.argv) != 2:
 
 show_visualization = (sys.argv[1] == "true")
 
+# configuration = [2, 1]
+# initial_weights = [[[2, -2, 0], [1, 3, -1]], [[3, -2, -1]]]
+
 configuration = [2, 1]
-initial_weights = [[[2, -2, 0], [1, 3, -1]], [[3, -2, -1]]]
+initial_weights = [[[0.5, 0.5, 0.5], [0.5, 0.5, 0.5]], [[0.5, 0.5]]]
 
 # create a network with 2 inputs and the initial weights for the connections
 # from the input and the bias input
@@ -59,7 +62,7 @@ if show_visualization:
   negative_x = []
   negative_y = []
 
-  steps = 5 # number of steps on each axis
+  steps = 10 # number of steps on each axis
   start_pos = -1 * steps # the x and y mins
   end_pos = 2 * steps # the x and y max
 

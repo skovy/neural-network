@@ -18,6 +18,9 @@ class InputPerceptron:
   def output(self, is_training = False):
     return self.input
 
+  def get_last_output(self):
+    return self.input
+
   def update_input(self, new_input):
     print("Updating %s input to %d" % (self.identifier, new_input))
     self.input = new_input

@@ -9,8 +9,6 @@ from input_perceptron import InputPerceptron
 #                  element is a layer with number of perceptrons)
 #   initial_weights: optional, initial weights for perceptrons (3D array), includes bias weights
 class Network:
-  LEARNING_CONSTANT = 0.5
-
   def __init__(self, number_of_inputs, configuration, initial_weights = []):
     self.number_of_inputs = number_of_inputs # a single integer for the total number of input perceptron
     self.configuration = configuration # a 1D array, each element is a layer, each number is the number of perceptrons
@@ -105,35 +103,24 @@ class Network:
   def run_single_training_input(self, inputs, expected_output):
     actual_output = self.run_single_input(inputs, True)
 
+    # calculate and set the delta values for each network
+    self.output_perceptron.calculate_output_delta(expected_output)
+    self.output_perceptron.update_connections()
+
     output = 0
-    if output >= 0:
+    if actual_output >= 0:
       output = 1
 
-    if output == expected_output:
-      print("Network produced the correct output")
-      return True # the correct output
+    print("EXPECTED", expected_output)
+    print("ACTUAL", actual_output)
+    print("OUTPUT", output)
+
+    if expected_output == output:
+      print("Network produced correct value.")
+      return True
     else:
-      print("Network produced the wrong output")
-
-      self.output_perceptron.calculate_output_delta(expected_output)
-
-      # for conn in connections:
-        # we only update the connections that actually impacted the output of this perceptron
-        # if conn.source.output() >= 0:
-
-          # weight = conn.get_weight()
-          # adjustment = 0
-
-          # if actual_output > expected_output:
-          #   # we need to decrease weights, because our actual output was too large
-          #   adjustment = Network.LEARNING_CONSTANT * -1
-          # else:
-          #   # we need to increase weights, because our actual output was too small
-          #   adjustment = Network.LEARNING_CONSTANT
-
-          # conn.update_weight(weight + adjustment)
-
-      return False # the wrong output
+      print("Network produced incorrect value.")
+      return False
 
   # train the network provided an array of training data
   # params:
@@ -143,9 +130,12 @@ class Network:
     all_correct = False
 
     iteration = 0
-    while all_correct != True and iteration < 2:
+    max_iterations = 4000
+    while all_correct != True and iteration < max_iterations:
       all_correct = True # assume everything is correct!
       iteration += 1
+
+      print("##### Starting Iteration %d #####" % (iteration))
 
       for example in training_set:
         correct_output = self.run_single_training_input(example['inputs'], example['expected_output'])
@@ -153,6 +143,8 @@ class Network:
           # one bad examples ruins it for all of us :(
           # but we don't break, we still have to go through the rest of the examples and get a turn :)
           all_correct = False
+
+    print("Training stopped after %d out of max %d iterations over the example set." % (iteration, max_iterations))
 
 
 

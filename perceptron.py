@@ -4,6 +4,7 @@ import math
 # params:
 #   input_connection: an array of Connections that are connected as inputs
 class Perceptron:
+  LEARNING_CONSTANT = 1
   counter = 0
 
   def __init__(self, input_connections):
@@ -30,12 +31,16 @@ class Perceptron:
     if is_training:
       final_result = self.sigmoid(total_sum)
     else:
-      final_result = total_sum
+      if total_sum >= 0:
+        final_result = 1
 
-    print("%s produced total sum: %f and sigmoid: %f and output: %d" % (self.identifier, total_sum, final_result, 0))
+    print("%s produced total sum: %f and final result (sigmoid/threshold): %f" % (self.identifier, total_sum, final_result))
 
     self.last_output = final_result
     return final_result
+
+  def get_last_output(self):
+    return self.last_output
 
   def get_input_connections(self):
     return self.input_connections
@@ -44,7 +49,19 @@ class Perceptron:
   def sigmoid(self, x):
     return 1 / (1 + math.exp(-x))
 
+  # update connection weights based of calculated delta values
+  def update_connections(self):
+    # update all previous layers (order doesn't matter since we've already calculated deltas)
+    for conn in self.input_connections:
+      new_weight = conn.get_weight() + Perceptron.LEARNING_CONSTANT * self.last_delta * conn.get_source().get_last_output()
+      conn.update_weight(new_weight)
+
+      if isinstance(conn.get_source(), Perceptron):
+        conn.get_source().update_connections()
+
   # calculate the delta of error for the final output node
+  # TODO(skovy): likely a bug with a network of config [2, 2, 1] because of a single hidden
+  # node requiring two back props - update connections to also have a sink/output perceptron
   def calculate_output_delta(self, desired):
     self.last_delta = self.last_output * (1 - self.last_output) * (desired - self.last_output)
     print("%s produced delta value: %f" % (self.identifier, self.last_delta))
