@@ -20,7 +20,7 @@ class Perceptron:
   def __str__(self):
      return self.identifier
 
-  def output(self, is_training = False):
+  def output(self, is_training = False, is_output = False):
     total_sum = 0
     for conn in self.input_connections:
       total_sum += conn.get_source().output(is_training) * conn.get_weight()
@@ -28,7 +28,7 @@ class Perceptron:
     # determine the final result, we only use the sigmoid function when performing training
     # otherwise we just use the weighted sums
     final_result = 0
-    if is_training:
+    if is_training and not is_output:
       final_result = self.sigmoid(total_sum)
     else:
       if total_sum >= 0:

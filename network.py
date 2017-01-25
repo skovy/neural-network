@@ -86,7 +86,7 @@ class Network:
   # run a single set of inputs through a "trained" network
   # params:
   #   inputs: an array of inputs for each input perceptron, keep order consistent
-  def run_single_input(self, inputs, is_training = False):
+  def run_single_input(self, inputs, is_training = False, is_output = False):
     if len(inputs) != self.number_of_inputs:
       raise Exception("The number of input values does not match the number of input nodes")
 
@@ -94,7 +94,7 @@ class Network:
     for i in range(0, self.number_of_inputs):
       self.input_perceptrons[i].update_input(inputs[i])
 
-    return self.output_perceptron.output(is_training)
+    return self.output_perceptron.output(is_training, is_output)
 
   # train the network by providing the expected output in addition to the outputs
   # params:
@@ -130,7 +130,7 @@ class Network:
     all_correct = False
 
     iteration = 0
-    max_iterations = 4000
+    max_iterations = 2000
     while all_correct != True and iteration < max_iterations:
       all_correct = True # assume everything is correct!
       iteration += 1
