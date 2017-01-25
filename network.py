@@ -20,7 +20,10 @@ class Network:
     self.hidden_perceptrons = [] # a 2D array of the network, each element is a layer, each array contains layer's perceptrons
     self.output_perceptron = None # the last perceptron in the network that provides the final output
 
-    # TODO(skovy): first check validity of inputs (especially initial_weights)
+    # check validity of initial weights
+    if len(self.initial_weights) != 0 and len(self.initial_weights) != len(self.configuration):
+      raise Exception("Initial weights doesn't match the configuration")
+
     # create the entire network, input perceptrons, hidden perceptrons (layers), connections, biases, etc
     self.create_input_perceptrons()
     self.create_hidden_perceptrons()
@@ -44,7 +47,7 @@ class Network:
         # the second layer and beyond connects to the previous hidden layer
         parents = self.hidden_perceptrons[index - 1]
 
-      layer = self.create_layer(self.configuration[index], parents)
+      layer = self.create_layer(self.configuration[index], parents, self.initial_weights[index])
       self.hidden_perceptrons.append(layer)
 
     # set the final out perceptron in the network
@@ -52,25 +55,25 @@ class Network:
     self.output_perceptron = self.hidden_perceptrons[-1][0]
 
   # create a single layer of hidden perceptrons, with connections to their parents and a bias
-  def create_layer(self, number_of_perceptrons, parents):
+  def create_layer(self, number_of_perceptrons, parents, layer_initial_weights):
     layer = []
 
     for index in range(0, number_of_perceptrons):
-      perceptron = self.create_hidden_perceptron(parents)
+      perceptron = self.create_hidden_perceptron(parents, layer_initial_weights[index])
       layer.append(perceptron)
 
     return layer
 
   # create a hidden perceptron that is part of a layer in the network
-  def create_hidden_perceptron(self, parents):
-    # initialize connections to the new perceptron with a connection to a bias input perceptron
-    # TODO(skovy): fix weight
-    connections = [Connection(self.create_bias_perceptron(), 0.5)]
+  def create_hidden_perceptron(self, parents, perceptron_initial_weights):
+    connections = []
 
     # add all parents as connections as inputs
-    for i, parent in enumerate(parents):
-      # TODO(skovy): fix weight
-      connections.append(Connection(parent, 0.5))
+    for index, parent in enumerate(parents):
+      connections.append(Connection(parent, perceptron_initial_weights[index]))
+
+    # initialize connections to the new perceptron with a connection to a bias input perceptron
+    connections.append(Connection(self.create_bias_perceptron(), perceptron_initial_weights[-1]))
 
     return Perceptron(connections)
 

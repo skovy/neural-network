@@ -15,9 +15,12 @@ if len(sys.argv) != 2:
 
 show_visualization = (sys.argv[1] == "true")
 
+configuration = [2, 1]
+initial_weights = [[[2, -2, 0], [1, 3, -1]], [[3, -2, -1]]]
+
 # create a network with 2 inputs and the initial weights for the connections
 # from the input and the bias input
-n = Network(2, [1, 1])
+n = Network(2, configuration, initial_weights)
 
 # a simple training set to learn the OR function
 or_function_training_set = [
