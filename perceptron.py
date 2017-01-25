@@ -8,6 +8,7 @@ class Perceptron:
 
   def __init__(self, input_connections):
     self.input_connections = input_connections
+    self.last_output = None
 
     # create an unique identifier for easier logging
     self.identifier = 'Perceptron #{0}'.format(Perceptron.counter)
@@ -17,15 +18,22 @@ class Perceptron:
   def __str__(self):
      return self.identifier
 
-  def output(self):
+  def output(self, is_training = False):
     total_sum = 0
     for conn in self.input_connections:
-      total_sum += conn.get_source().output() * conn.get_weight()
+      total_sum += conn.get_source().output(is_training) * conn.get_weight()
 
-    final_result = self.sigmoid(total_sum)
+    # determine the final result, we only use the sigmoid function when performing training
+    # otherwise we just use the weighted sums
+    final_result = 0
+    if is_training:
+      final_result = self.sigmoid(total_sum)
+    else:
+      final_result = total_sum
 
     print("%s produced total sum: %f and sigmoid: %f and output: %d" % (self.identifier, total_sum, final_result, 0))
 
+    self.last_output = final_result
     return final_result
 
   def get_input_connections(self):
@@ -34,6 +42,10 @@ class Perceptron:
   # calculate the sigmoid value
   def sigmoid(self, x):
     return 1 / (1 + math.exp(-x))
+
+  # calculate the delta of error
+  def delta(self, desired):
+    return self.last_output * (1 - self.last_output) * (desired - self.last_output)
 
   def final_weights(self):
     for conn in self.get_input_connections():

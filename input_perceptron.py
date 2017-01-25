@@ -15,7 +15,7 @@ class InputPerceptron:
   def __str__(self):
      return self.identifier
 
-  def output(self):
+  def output(self, is_training = False):
     return self.input
 
   def update_input(self, new_input):

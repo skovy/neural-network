@@ -88,7 +88,7 @@ class Network:
   # run a single set of inputs through a "trained" network
   # params:
   #   inputs: an array of inputs for each input perceptron, keep order consistent
-  def run_single_input(self, inputs):
+  def run_single_input(self, inputs, is_training = False):
     if len(inputs) != self.number_of_inputs:
       raise Exception("The number of input values does not match the number of input nodes")
 
@@ -96,37 +96,42 @@ class Network:
     for i in range(0, self.number_of_inputs):
       self.input_perceptrons[i].update_input(inputs[i])
 
-    return self.output_perceptron.output()
+    return self.output_perceptron.output(is_training)
 
   # train the network by providing the expected output in addition to the outputs
   # params:
   #   inputs: an array of inputs for each input perceptron, keep order consistent
   #   expected_output: the value that the network should produce, to help with learning
   def run_single_training_input(self, inputs, expected_output):
-    actual_output = self.run_single_input(inputs)
+    actual_output = self.run_single_input(inputs, True)
 
-    if actual_output == expected_output:
+    output = 0
+    if output >= 0:
+      output = 1
+
+    if output == expected_output:
       print("Network produced the correct output")
       return True # the correct output
     else:
       print("Network produced the wrong output")
 
-      connections = self.output_perceptron.get_input_connections()
+      print(self.output_perceptron.delta(expected_output))
 
-      for conn in connections:
+      # for conn in connections:
         # we only update the connections that actually impacted the output of this perceptron
-        if conn.source.output() >= 0:
-          weight = conn.get_weight()
-          adjustment = 0
+        # if conn.source.output() >= 0:
 
-          if actual_output > expected_output:
-            # we need to decrease weights, because our actual output was too large
-            adjustment = Network.LEARNING_CONSTANT * -1
-          else:
-            # we need to increase weights, because our actual output was too small
-            adjustment = Network.LEARNING_CONSTANT
+          # weight = conn.get_weight()
+          # adjustment = 0
 
-          conn.update_weight(weight + adjustment)
+          # if actual_output > expected_output:
+          #   # we need to decrease weights, because our actual output was too large
+          #   adjustment = Network.LEARNING_CONSTANT * -1
+          # else:
+          #   # we need to increase weights, because our actual output was too small
+          #   adjustment = Network.LEARNING_CONSTANT
+
+          # conn.update_weight(weight + adjustment)
 
       return False # the wrong output
 
