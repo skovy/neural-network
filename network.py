@@ -115,7 +115,7 @@ class Network:
     else:
       print("Network produced the wrong output")
 
-      print(self.output_perceptron.delta(expected_output))
+      self.output_perceptron.calculate_output_delta(expected_output)
 
       # for conn in connections:
         # we only update the connections that actually impacted the output of this perceptron
