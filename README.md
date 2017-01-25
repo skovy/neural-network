@@ -2,6 +2,10 @@
 
 A simple feed-forward neural network that uses back-propgation for training.
 
+#### Install Packages
+
+- `$ pip install --target=. plotly`
+
 #### Usage
 
 `$ python main.py <configuration_file:string> <training_data_file:string> <training_iterations:integer> <show_visualization:boolean> <start_pos:integer> <end_pos:integer> <steps:integer>`
