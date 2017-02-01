@@ -6,6 +6,7 @@ class InputPerceptron:
 
   def __init__(self, input = None):
     self.input = input
+    self.output_connections = []
 
     # create an unique identifier for easier logging
     self.identifier = 'Input Perceptron #{0}'.format(InputPerceptron.counter)
@@ -15,6 +16,9 @@ class InputPerceptron:
   def __str__(self):
      return self.identifier
 
+  def add_output_connection(self, output_connection):
+    self.output_connections.append(output_connection)
+
   def output(self, is_training = False):
     return self.input
 
@@ -22,5 +26,5 @@ class InputPerceptron:
     return self.input
 
   def update_input(self, new_input):
-    print("Updating %s input to %d" % (self.identifier, new_input))
+    print("Updating %s input to %f" % (self.identifier, new_input))
     self.input = new_input

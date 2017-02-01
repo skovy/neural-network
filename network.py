@@ -64,16 +64,19 @@ class Network:
 
   # create a hidden perceptron that is part of a layer in the network
   def create_hidden_perceptron(self, parents, perceptron_initial_weights):
-    connections = []
+    input_connections = []
 
-    # add all parents as connections as inputs
+    # add all parents as input_connections as inputs
     for index, parent in enumerate(parents):
-      connections.append(Connection(parent, perceptron_initial_weights[index]))
+      connection = Connection(parent, perceptron_initial_weights[index])
+      input_connections.append(connection)
+      # parents need a reference to their outputs later for error correction learning
+      parent.add_output_connection(connection)
 
-    # initialize connections to the new perceptron with a connection to a bias input perceptron
-    connections.append(Connection(self.create_bias_perceptron(), perceptron_initial_weights[-1]))
+    # initialize input_connections to the new perceptron with a connection to a bias input perceptron
+    input_connections.append(Connection(self.create_bias_perceptron(), perceptron_initial_weights[-1]))
 
-    return Perceptron(connections)
+    return Perceptron(input_connections)
 
   # create a bias perceptron that always outputs 1
   def create_bias_perceptron(self):
@@ -102,6 +105,9 @@ class Network:
   #   expected_output: the value that the network should produce, to help with learning
   def run_single_training_input(self, inputs, expected_output):
     actual_output = self.run_single_input(inputs, True)
+
+    # reset the deltas from the previous round
+    self.output_perceptron.reset_delta();
 
     # calculate and set the delta values for each network
     self.output_perceptron.calculate_output_delta(expected_output)

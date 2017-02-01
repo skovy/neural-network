@@ -7,6 +7,7 @@ class Connection:
   #   initial_weight: the initial weight of this connection
   def __init__(self, source, initial_weight):
     self.source = source
+    self.sink = None
     self.weight = initial_weight
 
     # create an unique identifier for easier logging
@@ -20,10 +21,16 @@ class Connection:
   def get_source(self):
     return self.source
 
+  def get_sink(self):
+    return self.sink
+
   def get_weight(self):
     return self.weight
 
   def update_weight(self, new_weight):
     self.weight = new_weight
     print("Updated %s with weight %f" % (self.identifier, self.weight))
+
+  def set_sink(self, sink):
+    self.sink = sink
 

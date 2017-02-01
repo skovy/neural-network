@@ -4,13 +4,18 @@ import math
 # params:
 #   input_connection: an array of Connections that are connected as inputs
 class Perceptron:
-  LEARNING_CONSTANT = 1
+  LEARNING_CONSTANT = 0.5
   counter = 0
 
   def __init__(self, input_connections):
     self.input_connections = input_connections
+    self.output_connections = []
     self.last_output = None
     self.last_delta = None
+
+    # update all inputs to recognize this perceptron as the input
+    for conn in self.input_connections:
+      conn.set_sink(self)
 
     # create an unique identifier for easier logging
     self.identifier = 'Perceptron #{0}'.format(Perceptron.counter)
@@ -19,6 +24,25 @@ class Perceptron:
 
   def __str__(self):
      return self.identifier
+
+  def get_delta(self):
+    # make sure we have calculated the delta for this training set
+    if self.last_delta is None:
+      self.calculate_delta()
+    return self.last_delta
+
+  def reset_delta(self):
+    # before each round of training, we need to reset the delta
+    self.last_delta = None
+
+    # recet all previous perceptrons' delta values
+    for conn in self.input_connections:
+      if isinstance(conn.get_source(), Perceptron):
+        conn.get_source().reset_delta()
+
+  # add a new output connection to this perceptron that it feeds it's result into
+  def add_output_connection(self, output_connection):
+    self.output_connections.append(output_connection)
 
   def output(self, is_training = False):
     total_sum = 0
@@ -72,13 +96,19 @@ class Perceptron:
   def calculate_previous_layer_delta(self):
     for conn in self.input_connections:
       if isinstance(conn.get_source(), Perceptron):
-        conn.get_source().calculate_delta(self.last_delta * conn.get_weight())
+        conn.get_source().calculate_delta()
 
   # calculate the delta of error for a hidden layer perceptron
-  def calculate_delta(self, previous_weighted_delta):
-    self.last_delta = self.last_output * (1 - self.last_output) * previous_weighted_delta
-    print("%s produced delta value: %f" % (self.identifier, self.last_delta))
+  def calculate_delta(self):
+    self.last_delta = 0
 
+    # read in all deltas from the perceptrons this perceptron outputs its value to
+    # use the weighted delta and generate this perceptrons delta
+    for conn in self.output_connections:
+      weighted_delta = (conn.get_sink().get_delta() * conn.get_weight())
+      self.last_delta += self.last_output * (1 - self.last_output) * weighted_delta
+
+    print("%s produced delta value: %f" % (self.identifier, self.last_delta))
     self.calculate_previous_layer_delta()
 
   def final_weights(self):

@@ -1,0 +1,23 @@
+{
+  "data": [
+    { "inputs": [-0.2, 0.05], "expected_output": 1 },
+    { "inputs": [-0.2, 0.04], "expected_output": 1 },
+    { "inputs": [-0.2, 0.03], "expected_output": 0 },
+
+    { "inputs": [-0.1, 0.02], "expected_output": 1 },
+    { "inputs": [-0.1, 0.01], "expected_output": 1 },
+    { "inputs": [-0.1, 0], "expected_output": 0 },
+
+    { "inputs": [0, 0.1], "expected_output": 1 },
+    { "inputs": [0, 0], "expected_output": 1 },
+    { "inputs": [0, -0.1], "expected_output": 0 },
+
+    { "inputs": [0.1, 0.02], "expected_output": 1 },
+    { "inputs": [0.1, 0.01], "expected_output": 1 },
+    { "inputs": [0.1, 0], "expected_output": 0 },
+
+    { "inputs": [0.2, 0.05], "expected_output": 1 },
+    { "inputs": [0.2, 0.04], "expected_output": 1 },
+    { "inputs": [0.2, 0.03], "expected_output": 0 }
+  ]
+}
