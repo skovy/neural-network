@@ -4,7 +4,7 @@ import math
 # params:
 #   input_connection: an array of Connections that are connected as inputs
 class Perceptron:
-  LEARNING_CONSTANT = 0.5
+  LEARNING_CONSTANT = 1
   counter = 0
 
   def __init__(self, input_connections):

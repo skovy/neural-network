@@ -1,23 +1,68 @@
 {
   "data": [
-    { "inputs": [-0.2, 0.05], "expected_output": 1 },
-    { "inputs": [-0.2, 0.04], "expected_output": 1 },
-    { "inputs": [-0.2, 0.03], "expected_output": 0 },
+    { "inputs": [-1, 1.1], "expected_output": 1 },
+    { "inputs": [-1, 1], "expected_output": 1 },
+    { "inputs": [-1, 0.9], "expected_output": 0 },
+    { "inputs": [-1, 0.8], "expected_output": 0 },
 
-    { "inputs": [-0.1, 0.02], "expected_output": 1 },
+    { "inputs": [-0.8, 0.74], "expected_output": 1 },
+    { "inputs": [-0.8, 0.64], "expected_output": 1 },
+    { "inputs": [-0.8, 0.54], "expected_output": 0 },
+    { "inputs": [-0.8, 0.44], "expected_output": 0 },
+
+    { "inputs": [-0.6, 0.46], "expected_output": 1 },
+    { "inputs": [-0.6, 0.36], "expected_output": 1 },
+    { "inputs": [-0.6, 0.26], "expected_output": 0 },
+    { "inputs": [-0.6, 0.16], "expected_output": 0 },
+
+    { "inputs": [-0.4, 0.26], "expected_output": 1 },
+    { "inputs": [-0.4, 0.16], "expected_output": 1 },
+    { "inputs": [-0.4, 0.06], "expected_output": 0 },
+    { "inputs": [-0.4, -0.04], "expected_output": 0 },
+
+    { "inputs": [-0.2, 0.14], "expected_output": 1 },
+    { "inputs": [-0.2, 0.04], "expected_output": 1 },
+    { "inputs": [-0.2, -0.06], "expected_output": 0 },
+    { "inputs": [-0.2, -0.16], "expected_output": 0 },
+
+    { "inputs": [-0.1, 0.11], "expected_output": 1 },
     { "inputs": [-0.1, 0.01], "expected_output": 1 },
-    { "inputs": [-0.1, 0], "expected_output": 0 },
+    { "inputs": [-0.1, -0.09], "expected_output": 0 },
+    { "inputs": [-0.1, -0.19], "expected_output": 0 },
 
     { "inputs": [0, 0.1], "expected_output": 1 },
     { "inputs": [0, 0], "expected_output": 1 },
     { "inputs": [0, -0.1], "expected_output": 0 },
+    { "inputs": [0, -0.2], "expected_output": 0 },
 
-    { "inputs": [0.1, 0.02], "expected_output": 1 },
+    { "inputs": [0.1, 0.11], "expected_output": 1 },
     { "inputs": [0.1, 0.01], "expected_output": 1 },
-    { "inputs": [0.1, 0], "expected_output": 0 },
+    { "inputs": [0.1, -0.09], "expected_output": 0 },
+    { "inputs": [0.1, -0.19], "expected_output": 0 },
 
-    { "inputs": [0.2, 0.05], "expected_output": 1 },
+    { "inputs": [0.2, 0.14], "expected_output": 1 },
     { "inputs": [0.2, 0.04], "expected_output": 1 },
-    { "inputs": [0.2, 0.03], "expected_output": 0 }
+    { "inputs": [0.2, -0.06], "expected_output": 0 },
+    { "inputs": [0.2, -0.16], "expected_output": 0 },
+
+    { "inputs": [0.4, 0.26], "expected_output": 1 },
+    { "inputs": [0.4, 0.16], "expected_output": 1 },
+    { "inputs": [0.4, 0.06], "expected_output": 0 },
+    { "inputs": [0.4, -0.04], "expected_output": 0 },
+
+    { "inputs": [0.6, 0.46], "expected_output": 1 },
+    { "inputs": [0.6, 0.36], "expected_output": 1 },
+    { "inputs": [0.6, 0.26], "expected_output": 0 },
+    { "inputs": [0.6, 0.16], "expected_output": 0 },
+
+    { "inputs": [0.8, 0.74], "expected_output": 1 },
+    { "inputs": [0.8, 0.64], "expected_output": 1 },
+    { "inputs": [0.8, 0.54], "expected_output": 0 },
+    { "inputs": [0.8, 0.44], "expected_output": 0 },
+
+    { "inputs": [1, 1.1], "expected_output": 1 },
+    { "inputs": [1, 1], "expected_output": 1 },
+    { "inputs": [1, 0.9], "expected_output": 0 },
+    { "inputs": [1, 0.8], "expected_output": 0 }
   ]
 }
