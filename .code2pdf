@@ -1,0 +1,9 @@
+:directories:
+  - .git
+  - assets
+  - .vscode
+:files:
+  - .DS_Store
+  - README.md
+  - .code2pdf
+  - .gitignore
