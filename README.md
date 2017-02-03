@@ -2,11 +2,11 @@
 
 A simple feed-forward neural network that uses back-propgation for training.
 
-#### Install Packages
+### Install Packages
 
 - `$ pip install --target=. plotly`
 
-#### Usage
+### Usage
 
 `$ python main.py <configuration_file:string> <training_data_file:string> <training_iterations:integer> <show_visualization:boolean> <start_pos:integer> <end_pos:integer> <steps:integer>`
 
@@ -23,7 +23,7 @@ Examples:
 - `$ python main.py configs/single-layer.json training-data/xor.json 100 false`
 - `$ python main.py configs/single-layer.json training-data/xor.json 4000 true -1 2 40`
 
-#### Configurations
+### Configurations
 
 The `/configs` directory contains network configurations. Each object contains
 data to dynamically generate a network. The `number_of_inputs` corresponds to
@@ -42,7 +42,7 @@ Order does matter, the first element will correspond to the first connection,
 or the first perceptron in the pervious layer, etc. The first hidden layer's previous
 layer will be the inputs, or `number_of_inputs + 1`.
 
-#### Training Data
+### Training Data
 
 The `/training-data` directory contains examples of training data. Each object
 contains a `data` key that corresponds to an array of examples. Each example
@@ -55,8 +55,11 @@ Training Data:
 - `or.json`: the OR function (`||`)
 - `xor.json`: the XOR function
 - `nxor.json`: the NXOR function
+- `x2.json`: the X^2 function
 
-#### Examples
+### Examples
+
+#### Example 1
 
 Executing `$ python main.py configs/single-layer.json training-data/xor.json 4000
 true -1 2 40` produces something like the following. It creates a network with
@@ -69,3 +72,18 @@ of `4000` for training and graphing from `(-1, -1)` to `(2, 2)` with `20` steps 
 unit produces the following visualization.
 
 ![XOR](/assets/xor.png)
+
+#### Example 2
+
+Executing `$ python main.py configs/multi-layer.json training-data/x2.json 1000
+true -1 1 50` produces something like the following. It creates a network with 2
+input nodes, a hidden layer with 4 perceptrons, a second hidden layer with 4
+ perceptrons and single output perceptron.
+
+![multi-hidden-layer](/assets/multi-hidden-layer.png)
+
+Provided with the training examples for the x^2 function, with a maximum iteration
+of `1000` for training and graphing from `(-1, -1)` to `(1, 1)` with `50` steps per
+unit produces the following visualization.
+
+![X^2](/assets/x2.png)
